@@ -1,24 +1,40 @@
-import { Component } from 'react';
-import style from './Searchbar.module.css';
-import { ImSearch } from 'react-icons/im';
+import PropTypes from 'prop-types';
 
-export default class Searchbar extends Component {
-  render() {
-    return (
-      <header className={style.Searchbar}>
-        <form className={style.Searchform} onSubmit={this.props.onSubmit}>
-          <button type="submit" className={style['SearchForm-button']}>
-            <ImSearch />
-          </button>
-          <input
-            className={style['SearchForm-input']}
-            type="text"
-            autoComplete="off"
-            autoFocus
-            placeholder="палаючий Кремль..."
-          />
-        </form>
-      </header>
-    );
-  }
-}
+import s from './Searchbar.module.css';
+
+export const Searchbar = ({ onSubmit }) => {
+  const handleSubmit = e => {
+    e.preventDefault();
+
+    const inputValue = e.currentTarget.children.input.value.trim();
+
+    if (inputValue === '') {
+      alert('Please enter search query');
+      return;
+    }
+    onSubmit(e.currentTarget.children.input.value.trim());
+  };
+
+  return (
+    <header className={s.header}>
+      <form className={s.form} onSubmit={handleSubmit}>
+        <button type="submit" className={s.button}>
+          <span className={s.buttonLabel}>Search</span>
+        </button>
+
+        <input
+          className={s.input}
+          type="text"
+          name="input"
+          autoComplete="off"
+          autoFocus
+          placeholder="Search images and photos"
+        />
+      </form>
+    </header>
+  );
+};
+
+Searchbar.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+};
